@@ -1,1327 +1,758 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Marketing Platform | Miriam Mussa Kutimila</title>
+    <title>EyeCare Pro - Professional Eye Care Equipment</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
     <style>
-        :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
-            --accent: #4cc9f0;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --success: #4ade80;
-            --warning: #facc15;
-            --danger: #f87171;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f7ff;
-            color: var(--dark);
-            line-height: 1.6;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header Styles */
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .logo i {
-            font-size: 28px;
-            color: var(--accent);
-        }
-        
-        .logo h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-        }
-        
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            padding: 8px 12px;
-            border-radius: 4px;
-        }
-        
-        nav a:hover {
-            background: rgba(255,255,255,0.15);
-        }
-        
-        .admin-btn {
-            background: var(--accent);
-            color: var(--dark);
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .admin-btn:hover {
-            background: #3ab0d9;
-            transform: translateY(-2px);
-        }
-        
-        /* Hero Section */
-        .hero {
-            position: relative;
-            padding: 80px 0;
-            background: linear-gradient(rgba(67, 97, 238, 0.85), rgba(63, 55, 201, 0.9)), url('https://placehold.co/1600x900/4361ee/ffffff?text=Global+Marketing') no-repeat center center/cover;
-            color: white;
-            text-align: center;
-        }
-        
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .hero h2 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .hero p {
-            font-size: 1.4rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            background: var(--accent);
-            color: var(--dark);
-            padding: 14px 32px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        
-        .cta-button:hover {
-            background: #2a9fd6;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-        }
-        
-        /* Spectacles Showcase */
-        .spectacles-showcase {
-            padding: 60px 0;
-            background: white;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-            position: relative;
-        }
-        
-        .section-title h2 {
-            font-size: 2.5rem;
-            color: var(--secondary);
-            display: inline-block;
-            padding-bottom: 15px;
-        }
-        
-        .section-title h2:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-        
-        .spectacles-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-        
-        .spectacle-item {
-            width: 280px;
-            height: 280px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            transition: all 0.4s ease;
-            position: relative;
-        }
-        
-        .spectacle-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-        }
-        
-        .spectacle-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .spectacle-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(67, 97, 238, 0.85);
-            color: white;
-            padding: 15px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .spectacle-item:hover .spectacle-overlay {
-            transform: translateY(0);
-        }
-        
-        /* Motivational Quotes */
-        .quotes-section {
-            padding: 60px 0;
-            background: linear-gradient(to bottom, #f0f4ff, #e6eeff);
-            text-align: center;
-        }
-        
-        .quote-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 30px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        
-        .quote-container:before {
-            content: """;
-            position: absolute;
-            top: 20px;
-            left: 30px;
-            font-size: 5rem;
-            color: var(--accent);
-            opacity: 0.2;
-            font-family: Georgia, serif;
-        }
-        
-        .quote-text {
-            font-size: 1.8rem;
-            font-style: italic;
-            margin-bottom: 20px;
-            color: var(--secondary);
-        }
-        
-        .quote-author {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
-        
-        /* About Company */
-        .about-section {
-            padding: 80px 0;
-            background: white;
-        }
-        
-        .about-content {
-            display: flex;
-            gap: 50px;
-            align-items: center;
-        }
-        
-        .about-text {
-            flex: 1;
-        }
-        
-        .about-text h3 {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            color: var(--secondary);
-        }
-        
-        .about-text p {
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-        
-        .about-image {
-            flex: 1;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-        }
-        
-        .about-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        /* Education Section */
-        .education-section {
-            padding: 80px 0;
-            background: linear-gradient(to bottom, #e6eeff, #f0f4ff);
-        }
-        
-        .education-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-        }
-        
-        .education-item {
-            flex: 1;
-            min-width: 300px;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .education-item:hover {
+        .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
-        .education-media {
-            height: 200px;
-            background: var(--light-gray);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gray);
-            font-size: 3rem;
-        }
-        
-        .education-info {
-            padding: 20px;
-        }
-        
-        .education-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: var(--secondary);
-        }
-        
-        /* Dashboard */
-        .dashboard-section {
-            padding: 80px 0;
-            background: white;
-        }
-        
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-        
-        .dashboard-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
-        .card-header {
-            background: var(--primary);
-            color: white;
-            padding: 15px 20px;
-            font-weight: 600;
-        }
-        
-        .card-body {
-            padding: 20px;
-        }
-        
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid var(--light-gray);
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--gray);
-        }
-        
-        /* Community Chat */
-        .community-section {
-            padding: 80px 0;
-            background: linear-gradient(to bottom, #f0f4ff, #e6eeff);
-        }
-        
-        .chat-container {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            height: 500px;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .chat-header {
-            background: var(--primary);
-            color: white;
-            padding: 15px 20px;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .message {
-            max-width: 70%;
-            padding: 12px 18px;
-            border-radius: 18px;
-            position: relative;
-        }
-        
-        .message.received {
-            align-self: flex-start;
-            background: var(--light-gray);
-            border-bottom-left-radius: 5px;
-        }
-        
-        .message.sent {
-            align-self: flex-end;
-            background: var(--accent);
-            color: var(--dark);
-            border-bottom-right-radius: 5px;
-        }
-        
-        .message-time {
-            font-size: 0.75rem;
-            opacity: 0.7;
-            margin-top: 5px;
-            text-align: right;
-        }
-        
-        .chat-input {
-            display: flex;
-            padding: 15px;
-            background: white;
-            border-top: 1px solid var(--light-gray);
-        }
-        
-        .chat-input input {
-            flex: 1;
-            padding: 12px 20px;
-            border: 1px solid var(--light-gray);
-            border-radius: 30px;
-            outline: none;
-            font-size: 1rem;
-        }
-        
-        .chat-input button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-left: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .chat-input button:hover {
-            background: var(--secondary);
-            transform: scale(1.05);
-        }
-        
-        /* Contact Section */
-        .contact-section {
-            padding: 80px 0;
-            background: white;
-        }
-        
-        .contact-content {
-            display: flex;
-            gap: 50px;
-        }
-        
-        .contact-info {
-            flex: 1;
-        }
-        
-        .contact-info h3 {
-            font-size: 2rem;
-            margin-bottom: 25px;
-            color: var(--secondary);
-        }
-        
-        .contact-details {
-            margin-bottom: 30px;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .contact-item i {
-            width: 40px;
-            height: 40px;
-            background: var(--light-gray);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-link {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        
-        .social-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .tiktok { background: #000; }
-        .instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-        
-        .contact-form {
-            flex: 1;
-            background: var(--light);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--light-gray);
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-        
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            border-color: var(--primary);
-        }
-        
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-        
-        .submit-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px 30px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-        
-        .submit-btn:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-        }
-        
-        /* Footer */
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 40px 0 20px;
-        }
-        
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-bottom: 30px;
-        }
-        
-        .footer-column {
-            flex: 1;
-            min-width: 250px;
-        }
-        
-        .footer-column h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .footer-column h3:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--accent);
-        }
-        
-        .footer-column p {
-            margin-bottom: 15px;
-            opacity: 0.8;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-        }
-        
-        .footer-links a:hover {
-            opacity: 1;
-            text-decoration: underline;
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            opacity: 0.7;
-            font-size: 0.9rem;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .about-content,
-            .contact-content {
-                flex-direction: column;
-            }
-            
-            .hero h2 {
-                font-size: 2.8rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            nav ul {
-                gap: 15px;
-                font-size: 0.9rem;
-            }
-            
-            .hero h2 {
-                font-size: 2.2rem;
-            }
-            
-            .hero p {
-                font-size: 1.1rem;
-            }
-            
-            .section-title h2 {
-                font-size: 2rem;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .hero {
-                padding: 60px 0;
-            }
-            
-            .hero h2 {
-                font-size: 1.8rem;
-            }
-            
-            .cta-button {
-                padding: 12px 24px;
-                font-size: 1rem;
-            }
-        }
-        
-        /* Admin Panel Styles */
-        .admin-panel {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s ease;
-        }
-        
-        .admin-panel.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .admin-content {
-            background: white;
-            width: 90%;
-            max-width: 800px;
-            border-radius: 20px;
-            overflow: hidden;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .admin-header {
-            background: var(--primary);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .admin-body {
-            padding: 20px;
-            overflow-y: auto;
-            flex: 1;
-        }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        .admin-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 20px;
-        }
-        
-        .form-row .form-group {
-            flex: 1;
-        }
-        
-        .stats-display {
-            display: flex;
-            justify-content: space-around;
-            background: var(--light);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        
-        .stat-box {
-            text-align: center;
-        }
-        
-        .stat-box .value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .stat-box .label {
-            font-size: 0.9rem;
-            color: var(--gray);
-        }
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .cart-item:hover {
+            background-color: #f9fafb;
+        }
+        .status-processing { background-color: #fef3c7; }
+        .status-shipped { background-color: #dbeafe; }
+        .status-delivered { background-color: #d1fae5; }
+        .status-cancelled { background-color: #fee2e2; }
     </style>
 </head>
-<body>
-    <!-- Header -->
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <i class="fas fa-globe-africa"></i>
-                <h1>Global Marketing Platform</h1>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-blue-900 text-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-eye text-2xl mr-2"></i>
+                    <span class="text-xl font-bold">EyeCare Pro</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#products" class="hover:text-blue-200 transition-colors">Products</a>
+                    <a href="#cart" class="hover:text-blue-200 transition-colors">Cart (<span id="cart-count">0</span>)</a>
+                    <a href="#orders" class="hover:text-blue-200 transition-colors">My Orders</a>
+                    <a href="#account" class="hover:text-blue-200 transition-colors">Account</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="loginBtn" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition-colors">
+                        Login
+                    </button>
+                    <button id="registerBtn" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded transition-colors">
+                        Register
+                    </button>
+                </div>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#education">Education</a></li>
-                    <li><a href="#dashboard">Dashboard</a></li>
-                    <li><a href="#community">Community</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-            <button class="admin-btn" id="adminToggle">Admin Panel</button>
         </div>
-    </header>
+    </nav>
 
     <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container hero-content">
-            <h2>Global Marketing & Advertisement Solutions</h2>
-            <p>Reach customers worldwide with our innovative marketing platform. Request services, access educational resources, and connect with our community.</p>
-            <a href="#contact" class="cta-button">Request Our Services</a>
-        </div>
-    </section>
-
-    <!-- Spectacles Showcase -->
-    <section class="spectacles-showcase">
-        <div class="container">
-            <div class="section-title">
-                <h2>Featured Spectacles</h2>
-            </div>
-            <div class="spectacles-container">
-                <div class="spectacle-item">
-                    <img src="https://placehold.co/600x600/4361ee/ffffff?text=Spectacle+1" alt="Spectacle 1">
-                    <div class="spectacle-overlay">
-                        <h3>Premium Collection</h3>
-                        <p>High-quality frames for every style</p>
-                    </div>
-                </div>
-                <div class="spectacle-item">
-                    <img src="https://placehold.co/600x600/3f37c9/ffffff?text=Spectacle+2" alt="Spectacle 2">
-                    <div class="spectacle-overlay">
-                        <h3>Luxury Eyewear</h3>
-                        <p>Handcrafted designs for discerning customers</p>
-                    </div>
-                </div>
-                <div class="spectacle-item">
-                    <img src="https://placehold.co/600x600/4cc9f0/ffffff?text=Spectacle+3" alt="Spectacle 3">
-                    <div class="spectacle-overlay">
-                        <h3>Sports Collection</h3>
-                        <p>Durable frames for active lifestyles</p>
-                    </div>
-                </div>
+    <section class="bg-gradient-to-r from-blue-800 to-purple-800 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Professional Eye Care Equipment</h1>
+            <p class="text-xl mb-8">Premium tools, instruments, and supplies for eye care professionals</p>
+            <div class="flex justify-center space-x-4">
+                <button id="shopBtn" class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
+                    Shop Now
+                </button>
+                <button id="registerBtnHero" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors">
+                    Register Account
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- Motivational Quotes -->
-    <section class="quotes-section">
-        <div class="container">
-            <div class="quote-container">
-                <p class="quote-text">"Success is not final, failure is not fatal: It is the courage to continue that counts."</p>
-                <p class="quote-author">- Winston Churchill</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Company -->
-    <section class="about-section" id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>About Our Company</h2>
-            </div>
-            <div class="about-content">
-                <div class="about-text">
-                    <h3>Global Marketing Excellence</h3>
-                    <p>Founded by Miriam Mussa Kutimila, our company specializes in worldwide marketing and advertisement solutions. We connect businesses with global audiences through innovative strategies and cutting-edge technology.</p>
-                    <p>Our mission is to empower businesses of all sizes to reach their target markets effectively, regardless of geographical boundaries. With a focus on quality and results, we've helped hundreds of clients achieve their marketing goals.</p>
-                    <p>As a woman-led enterprise, we bring unique perspectives to marketing challenges, creating campaigns that resonate across cultures and demographics.</p>
-                </div>
-                <div class="about-image">
-                    <img src="https://placehold.co/600x500/4361ee/ffffff?text=Founder+Miriam+Kutimila" alt="Founder Miriam Mussa Kutimila">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education Section -->
-    <section class="education-section" id="education">
-        <div class="container">
-            <div class="section-title">
-                <h2>Educational Resources</h2>
-            </div>
-            <div class="education-content">
-                <div class="education-item">
-                    <div class="education-media">
-                        <i class="fas fa-video"></i>
-                    </div>
-                    <div class="education-info">
-                        <h3>Marketing Fundamentals</h3>
-                        <p>Learn the core principles of effective marketing strategies in this comprehensive video course.</p>
-                    </div>
-                </div>
-                <div class="education-item">
-                    <div class="education-media">
-                        <i class="fas fa-microphone-alt"></i>
-                    </div>
-                    <div class="education-info">
-                        <h3>Advertising Techniques</h3>
-                        <p>Discover proven advertising methods that drive results in various global markets.</p>
-                    </div>
-                </div>
-                <div class="education-item">
-                    <div class="education-media">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <div class="education-info">
-                        <h3>Community Discussions</h3>
-                        <p>Join our community forums to share ideas, ask questions, and learn from industry experts.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Dashboard -->
-    <section class="dashboard-section" id="dashboard">
-        <div class="container">
-            <div class="section-title">
-                <h2>Marketing Campaign Dashboard</h2>
-            </div>
-            <div class="dashboard-grid">
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        Global Reach Campaign
-                    </div>
-                    <div class="card-body">
-                        <p>Our flagship campaign targeting 50+ countries with localized content.</p>
-                        <div class="stats">
-                            <div class="stat-item">
-                                <div class="stat-value">12,500</div>
-                                <div class="stat-label">Views</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-value">842</div>
-                                <div class="stat-label">Engagements</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        Spectacle Launch
-                    </div>
-                    <div class="card-body">
-                        <p>New premium eyewear collection with influencer partnerships.</p>
-                        <div class="stats">
-                            <div class="stat-item">
-                                <div class="stat-value">8,750</div>
-                                <div class="stat-label">Views</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-value">635</div>
-                                <div class="stat-label">Engagements</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        Educational Series</div>
-                    <div class="card-body">
-                        <p>Weekly marketing tutorials and industry insights.</p>
-                        <div class="stats">
-                            <div class="stat-item">
-                                <div class="stat-value">5,200</div>
-                                <div class="stat-label">Views</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-value">420</div>
-                                <div class="stat-label">Engagements</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Community Chat -->
-    <section class="community-section" id="community">
-        <div class="container">
-            <div class="section-title">
-                <h2>Community Hub</h2>
-            </div>
-            <div class="chat-container">
-                <div class="chat-header">
-                    <span>Global Marketing Community</span>
-                    <span>124 online</span>
-                </div>
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message received">
-                        <div class="message-text">Just launched our new spectacles collection! Check it out on the dashboard.</div>
-                        <div class="message-time">10:23 AM</div>
-                    </div>
-                    <div class="message sent">
-                        <div class="message-text">Great work! The design is amazing. How can I get involved in the next campaign?</div>
-                        <div class="message-time">10:25 AM</div>
-                    </div>
-                    <div class="message received">
-                        <div class="message-text">We're looking for brand ambassadors in East Africa. DM me for details!</div>
-                        <div class="message-time">10:27 AM</div>
-                    </div>
-                    <div class="message received">
-                        <div class="message-text">Don't forget to join our educational webinar tomorrow at 3 PM GMT!</div>
-                        <div class="message-time">10:30 AM</div>
-                    </div>
-                </div>
-                <div class="chat-input">
-                    <input type="text" id="messageInput" placeholder="Share your ideas, deals, or questions...">
-                    <button id="sendButton"><i class="fas fa-paper-plane"></i></button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact-section" id="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2>Contact Us</h2>
-            </div>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h3>Get In Touch</h3>
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <div>
-                                <h4>Phone</h4>
-                                <p>+255-761-632-127</p>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <div>
-                                <h4>Email</h4>
-                                <p>miriamkutimila68@gmail.com</p>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <div>
-                                <h4>Location</h4>
-                                <p>Dar es Salaam, Tanzania</p>
-                            </div>
-                        </div>
-                    </div>
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="https://tiktok.com/@sheismiry" class="social-link tiktok" target="_blank">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
-                        <a href="https://instagram.com/miriammussakutimila" class="social-link instagram" target="_blank">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="contact-form">
-                    <h3>Request Our Services</h3>
-                    <form id="serviceForm" action="mailto:miriamkutimila68@gmail.com" method="post" enctype="text/plain">
-                        <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone">
-                        </div>
-                        <div class="form-group">
-                            <label for="service">Service Required</label>
-                            <select id="service" name="service" required>
-                                <option value="">Select a service</option>
-                                <option value="marketing">Global Marketing Campaign</option>
-                                <option value="advertisement">Advertisement Strategy</option>
-                                <option value="spectacles">Spectacle Promotion</option>
-                                <option value="consultation">Business Consultation</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Your Message</label>
-                            <textarea id="message" name="message" placeholder="Tell us about your project..." required></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn">Send Request</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Global Marketing Platform</h3>
-                    <p>Connecting businesses with global audiences through innovative marketing solutions.</p>
-                    <p>Founded and led by Miriam Mussa Kutimila, our mission is to empower businesses worldwide.</p>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Company</a></li>
-                        <li><a href="#education">Education Resources</a></li>
-                        <li><a href="#dashboard">Campaign Dashboard</a></li>
-                        <li><a href="#community">Community Hub</a></li>
+    <!-- User Type Selection -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Choose Your Account Type</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-blue-50 p-6 rounded-lg border-2 border-blue-200">
+                    <h3 class="text-xl font-semibold mb-4">Eye Doctor</h3>
+                    <ul class="space-y-2 mb-4">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Professional Pricing</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Specialized Equipment</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Priority Support</li>
                     </ul>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors">
+                        Register as Doctor
+                    </button>
                 </div>
-                <div class="footer-column">
-                    <h3>Contact Info</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-phone"></i> +255-761-632-127</li>
-                        <li><i class="fas fa-envelope"></i> miriamkutimila68@gmail.com</li>
-                        <li><i class="fab fa-tiktok"></i> @sheismiry</li>
-                        <li><i class="fab fa-instagram"></i> miriammussakutimila</li>
+                <div class="bg-green-50 p-6 rounded-lg border-2 border-green-200">
+                    <h3 class="text-xl font-semibold mb-4">Eye Facility</h3>
+                    <ul class="space-y-2 mb-4">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Wholesale Pricing</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Bulk Orders</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Credit Terms</li>
                     </ul>
+                    <button class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition-colors">
+                        Register as Facility
+                    </button>
                 </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2023 Global Marketing Platform. All rights reserved. Founder & CEO: Miriam Mussa Kutimila</p>
+                <div class="bg-purple-50 p-6 rounded-lg border-2 border-purple-200">
+                    <h3 class="text-xl font-semibold mb-4">Individual</h3>
+                    <ul class="space-y-2 mb-4">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Retail Pricing</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Consumer Products</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Prescription Services</li>
+                    </ul>
+                    <button class="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition-colors">
+                        Register as Individual
+                    </button>
+                </div>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <!-- Admin Panel -->
-    <div class="admin-panel" id="adminPanel">
-        <div class="admin-content">
-            <div class="admin-header">
-                <h2>Admin Control Panel</h2>
-                <button class="close-btn" id="closeAdmin">&times;</button>
+    <!-- Product Categories -->
+    <section id="products" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Product Categories</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                <div class="bg-gray-50 p-6 rounded-lg text-center hover:shadow-lg transition-shadow cursor-pointer">
+                    <i class="fas fa-microscope text-4xl text-blue-600 mb-4"></i>
+                    <h3 class="font-semibold">Diagnostic Equipment</h3>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg text-center hover:shadow-lg transition-shadow cursor-pointer">
+                    <i class="fas fa-tools text-4xl text-blue-600 mb-4"></i>
+                    <h3 class="font-semibold">Surgical Instruments</h3>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg text-center hover:shadow-lg transition-shadow cursor-pointer">
+                    <i class="fas fa-glasses text-4xl text-blue-600 mb-4"></i>
+                    <h3 class="font-semibold">Frames & Lenses</h3>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg text-center hover:shadow-lg transition-shadow cursor-pointer">
+                    <i class="fas fa-capsules text-4xl text-blue-600 mb-4"></i>
+                    <h3 class="font-semibold">Consumables</h3>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg text-center hover:shadow-lg transition-shadow cursor-pointer">
+                    <i class="fas fa-heartbeat text-4xl text-blue-600 mb-4"></i>
+                    <h3 class="font-semibold">Surgical Items</h3>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg text-center hover:shadow-lg transition-shadow cursor-pointer">
+                    <i class="fas fa-box text-4xl text-blue-600 mb-4"></i>
+                    <h3 class="font-semibold">Accessories</h3>
+                </div>
             </div>
-            <div class="admin-body">
-                <div class="admin-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="adminName">Admin Name</label>
-                            <input type="text" id="adminName" value="Miriam Mussa Kutimila" disabled>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Featured Products</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow product-card">
+                    <img src="https://placehold.co/300x200/e2e8f0/64748b?text=Ophthalmoscope" alt="Ophthalmoscope" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-semibold text-lg mb-2">Digital Ophthalmoscope</h3>
+                        <p class="text-gray-600 text-sm mb-4">Professional grade diagnostic tool</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold text-green-600">$2,499</span>
+                            <button class="add-to-cart bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors" data-product="Digital Ophthalmoscope" data-price="2499">
+                                Add to Cart
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="adminEmail">Admin Email</label>
-                            <input type="email" id="adminEmail" value="miriamkutimila68@gmail.com" disabled>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="campaignTitle">Campaign Title</label>
-                        <input type="text" id="campaignTitle" placeholder="Enter campaign title">
-                    </div>
-                    <div class="form-group">
-                        <label for="campaignDescription">Campaign Description</label>
-                        <textarea id="campaignDescription" placeholder="Describe your marketing campaign"></textarea>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="views">Views</label>
-                            <input type="number" id="views" value="26450" min="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="visitors">Visitors</label>
-                            <input type="number" id="visitors" value="15872" min="0">
-                        </div>
-                    </div>
-                    <button class="submit-btn" id="updateStats">Update Campaign & Stats</button>
-                </div>
-                <div class="stats-display">
-                    <div class="stat-box">
-                        <div class="value" id="totalViews">26,450</div>
-                        <div class="label">Total Views</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="value" id="totalVisitors">15,872</div>
-                        <div class="label">Total Visitors</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="value">3</div>
-                        <div class="label">Active Campaigns</div>
                     </div>
                 </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow product-card">
+                    <img src="https://placehold.co/300x200/e2e8f0/64748b?text=Phoropter" alt="Phoropter" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-semibold text-lg mb-2">Auto Refractor</h3>
+                        <p class="text-gray-600 text-sm mb-4">Advanced refraction system</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold text-green-600">$8,999</span>
+                            <button class="add-to-cart bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors" data-product="Auto Refractor" data-price="8999">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow product-card">
+                    <img src="https://placehold.co/300x200/e2e8f0/64748b?text=Slit+Lamp" alt="Slit Lamp" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-semibold text-lg mb-2">Slit Lamp Biomicroscope</h3>
+                        <p class="text-gray-600 text-sm mb-4">High-resolution examination</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold text-green-600">$12,499</span>
+                            <button class="add-to-cart bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors" data-product="Slit Lamp Biomicroscope" data-price="12499">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow product-card">
+                    <img src="https://placehold.co/300x200/e2e8f0/64748b?text=Frame+Display" alt="Frame Display" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="font-semibold text-lg mb-2">Designer Frames</h3>
+                        <p class="text-gray-600 text-sm mb-4">Premium optical frames</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-bold text-green-600">$199</span>
+                            <button class="add-to-cart bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors" data-product="Designer Frames" data-price="199">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart -->
+    <section id="cart" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Your Shopping Cart</h2>
+            <div class="bg-gray-50 rounded-lg p-8">
+                <div id="cart-items" class="space-y-4 mb-8">
+                    <!-- Cart items will be added here dynamically -->
+                    <div id="empty-cart" class="text-center py-12">
+                        <i class="fas fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-xl text-gray-500">Your cart is empty</p>
+                        <p class="text-gray-400">Add some products to your cart</p>
+                    </div>
+                </div>
+
+                <div id="cart-summary" class="border-t pt-8 hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <div class="flex justify-between">
+                                <span>Subtotal:</span>
+                                <span id="subtotal">$0.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Tax (8%):</span>
+                                <span id="tax">$0.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Shipping:</span>
+                                <span id="shipping">$0.00</span>
+                            </div>
+                            <div class="border-t pt-4 flex justify-between text-xl font-bold">
+                                <span>Total:</span>
+                                <span id="total">$0.00</span>
+                            </div>
+                        </div>
+                        <div>
+                            <button id="checkoutBtn" class="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-lg text-lg font-semibold transition-colors">
+                                Proceed to Checkout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout & Payment -->
+    <section id="checkout" class="py-16 bg-gray-50 hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-8">Checkout & Payment</h2>
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Billing Information -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6">Billing Information</h3>
+                        <form id="billingForm" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Full Name</label>
+                                <input type="text" id="fullName" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Email</label>
+                                <input type="email" id="email" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Phone</label>
+                                <input type="tel" id="phone" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Address</label>
+                                <input type="text" id="address" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">City</label>
+                                    <input type="text" id="city" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Postal Code</label>
+                                    <input type="text" id="postalCode" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Payment Information -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6">Payment Information</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Card Number</label>
+                                <input type="text" id="cardNumber" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="4242 4242 4242 4242" required>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Expiry Date</label>
+                                    <input type="text" id="expiryDate" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="MM/YY" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">CVC</label>
+                                    <input type="text" id="cvc" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="123" required>
+                                </div>
+                            </div>
+
+                            <!-- Stripe Payment Element -->
+                            <div id="payment-element" class="mt-4 p-4 border border-gray-300 rounded-lg">
+                                <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                    <p class="text-blue-800"><i class="fas fa-lock mr-2"></i>Secure payment processing powered by Stripe</p>
+                                    <p class="text-sm text-blue-600 mt-2">Card details will be encrypted and processed securely</p>
+                                </div>
+                            </div>
+
+                            <button id="payButton" class="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-lg text-lg font-semibold transition-colors">
+                                Pay <span id="checkout-total">$0.00</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- My Orders -->
+    <section id="orders" class="py-16 bg-white hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">My Orders</h2>
+            <div class="bg-gray-50 rounded-lg p-8">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="py-3 px-4 text-left">Order ID</th>
+                                <th class="py-3 px-4 text-left">Date</th>
+                                <th class="py-3 px-4 text-left">Status</th>
+                                <th class="py-3 px-4 text-left">Total</th>
+                                <th class="py-3 px-4 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table">
+                            <tr>
+                                <td class="py-3 px-4">#EC2025-001</td>
+                                <td class="py-3 px-4">2025-01-15</td>
+                                <td class="py-3 px-4"><span class="status-delivered px-2 py-1 rounded">Delivered</span></td>
+                                <td class="py-3 px-4">$2,698.92</td>
+                                <td class="py-3 px-4">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-2">View</button>
+                                    <button class="text-green-600 hover:text-green-800">Download Invoice</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4">#EC2025-002</td>
+                                <td class="py-3 px-4">2025-01-10</td>
+                                <td class="py-3 px-4"><span class="status-shipped px-2 py-1 rounded">Shipped</span></td>
+                                <td class="py-3 px-4">$8,999.00</td>
+                                <td class="py-3 px-4">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-2">View</button>
+                                    <button class="text-green-600 hover:text-green-800">Download Invoice</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Summary Modal -->
+    <div id="orderModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full">
+            <h3 class="text-2xl font-bold mb-4">Order Placed Successfully!</h3>
+            <p class="text-gray-600 mb-6">Thank you for your order. Your order number is #EC2025-001.</p>
+            <div class="mb-6">
+                <h4 class="font-semibold mb-2">Order Details:</h4>
+                <ul id="order-details" class="space-y-1"></ul>
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button id="closeModal" class="px-6 py-2 border border-gray-300 rounded hover:bg-gray-100">
+                    Close
+                </button>
+                <button class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    View Order
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- Registration Modal -->
+    <div id="registrationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg p-8 max-w-2xl w-full">
+            <h3 class="text-2xl font-bold mb-6">Create Account</h3>
+            <form id="registrationForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">First Name</label>
+                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Last Name</label>
+                        <input type="text" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Email</label>
+                    <input type="email" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Password</label>
+                    <input type="password" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">User Type</label>
+                    <select class="w-full p-3 border border-gray-300 rounded-lg" required>
+                        <option value="">Select User Type</option>
+                        <option value="doctor">Eye Doctor</option>
+                        <option value="facility">Eye Facility</option>
+                        <option value="individual">Individual</option>
+                    </select>
+                </div>
+                <div id="licenseInfo" class="hidden">
+                    <label class="block text-sm font-medium mb-1">License Number</label>
+                    <input type="text" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Enter your license number">
+                </div>
+                <div class="flex justify-end space-x-4 mt-6">
+                    <button type="button" id="closeRegModal" class="px-6 py-2 border border-gray-300 rounded hover:bg-gray-100">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                        Create Account
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">EyeCare Pro</h4>
+                    <p class="text-gray-300">Professional eye care equipment and supplies for healthcare providers.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#products" class="hover:text-white">Products</a></li>
+                        <li><a href="#cart" class="hover:text-white">Cart</a></li>
+                        <li><a href="#orders" class="hover:text-white">My Orders</a></li>
+                        <li><a href="#" class="hover:text-white">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Categories</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white">Diagnostic Equipment</a></li>
+                        <li><a href="#" class="hover:text-white">Surgical Instruments</a></li>
+                        <li><a href="#" class="hover:text-white">Frames & Lenses</a></li>
+                        <li><a href="#" class="hover:text-white">Consumables</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <p class="text-gray-300">Email: support@eyecarepro.com</p>
+                    <p class="text-gray-300">Phone: +1 (555) 123-4567</p>
+                    <p class="text-gray-300">Address: 123 Medical Way, Health City</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                <p>&copy; 2025 EyeCare Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        // Toggle Admin Panel
-        document.getElementById('adminToggle').addEventListener('click', function() {
-            document.getElementById('adminPanel').classList.add('active');
-        });
-        
-        document.getElementById('closeAdmin').addEventListener('click', function() {
-            document.getElementById('adminPanel').classList.remove('active');
-        });
-        
-        // Update Stats
-        document.getElementById('updateStats').addEventListener('click', function() {
-            const views = document.getElementById('views').value;
-            const visitors = document.getElementById('visitors').value;
-            
-            document.getElementById('totalViews').textContent = views.toLocaleString();
-            document.getElementById('totalVisitors').textContent = visitors.toLocaleString();
-            
-            // In a real implementation, this would save to a database
-            alert('Campaign and stats updated successfully!');
-        });
-        
-        // Chat functionality
-        document.getElementById('sendButton').addEventListener('click', function() {
-            const messageInput = document.getElementById('messageInput');
-            const message = messageInput.value.trim();
-            
-            if (message) {
-                const chatMessages = document.getElementById('chatMessages');
-                const messageElement = document.createElement('div');
-                messageElement.className = 'message sent';
-                messageElement.innerHTML = `
-                    <div class="message-text">${message}</div>
-                    <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-                `;
-                chatMessages.appendChild(messageElement);
-                messageInput.value = '';
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+        // Global variables
+        let cart = [];
+        let currentUser = null;
+
+        // DOM Elements
+        const cartCount = document.getElementById('cart-count');
+        const cartItems = document.getElementById('cart-items');
+        const cartSummary = document.getElementById('cart-summary');
+        const emptyCart = document.getElementById('empty-cart');
+        const subtotalEl = document.getElementById('subtotal');
+        const taxEl = document.getElementById('tax');
+        const shippingEl = document.getElementById('shipping');
+        const totalEl = document.getElementById('total');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const checkoutSection = document.getElementById('checkout');
+        const payButton = document.getElementById('payButton');
+        const orderModal = document.getElementById('orderModal');
+        const closeModal = document.getElementById('closeModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const registerBtnHero = document.getElementById('registerBtnHero');
+        const registrationModal = document.getElementById('registrationModal');
+        const closeRegModal = document.getElementById('closeRegModal');
+        const shopBtn = document.getElementById('shopBtn');
+        const ordersSection = document.getElementById('orders');
+
+        // Initialize the application
+        function init() {
+            // Load cart from localStorage if available
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCartDisplay();
             }
-        });
-        
-        // Form submission
-        document.getElementById('serviceForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Your service request has been sent to miriamkutimila68@gmail.com! The admin will contact you shortly.');
-            this.reset();
-        });
-        
-        // Smooth scrolling for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+
+            // Add event listeners
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', addToCart);
             });
-        });
+
+            checkoutBtn.addEventListener('click', showCheckout);
+            payButton.addEventListener('click', processPayment);
+            closeModal.addEventListener('click', () => orderModal.classList.add('hidden'));
+            loginBtn.addEventListener('click', showLogin);
+            registerBtn.addEventListener('click', showRegistration);
+            registerBtnHero.addEventListener('click', showRegistration);
+            closeRegModal.addEventListener('click', () => registrationModal.classList.add('hidden'));
+            shopBtn.addEventListener('click', scrollToProducts);
+
+            // Show/hide license info based on user type selection
+            document.querySelector('#registrationForm select').addEventListener('change', function() {
+                const licenseInfo = document.getElementById('licenseInfo');
+                if (this.value === 'doctor' || this.value === 'facility') {
+                    licenseInfo.classList.remove('hidden');
+                } else {
+                    licenseInfo.classList.add('hidden');
+                }
+            });
+        }
+
+        // Add to cart function
+        function addToCart(e) {
+            const product = e.target.getAttribute('data-product');
+            const price = parseFloat(e.target.getAttribute('data-price'));
+
+            // Check if product already in cart
+            const existingItem = cart.find(item => item.name === product);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    name: product,
+                    price: price,
+                    quantity: 1
+                });
+            }
+
+            // Save cart to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Update display
+            updateCartDisplay();
+
+            // Show notification
+            showNotification(`${product} added to cart!`);
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            // Update cart count
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+
+            // Clear cart items
+            cartItems.innerHTML = '';
+
+            if (cart.length === 0) {
+                emptyCart.classList.remove('hidden');
+                cartSummary.classList.add('hidden');
+                return;
+            }
+
+            emptyCart.classList.add('hidden');
+            cartSummary.classList.remove('hidden');
+
+            // Add cart items
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item flex justify-between items-center p-4 bg-white rounded-lg shadow mb-4';
+                cartItem.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <img src="https://placehold.co/80x60/e2e8f0/64748b?text=Item" alt="${item.name}" class="w-20 h-16 object-cover rounded">
+                        <div>
+                            <h4 class="font-semibold">${item.name}</h4>
+                            <p class="text-gray-600">Price: $${item.price.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <button class="quantity-btn w-8 h-8 flex items-center justify-center border border-gray-300 rounded-l" data-index="${index}" data-action="decrease">-</button>
+                            <span class="quantity-display w-12 h-8 flex items-center justify-center border-t border-b border-gray-300">${item.quantity}</span>
+                            <button class="quantity-btn w-8 h-8 flex items-center justify-center border border-gray-300 rounded-r" data-index="${index}" data-action="increase">+</button>
+                        </div>
+                        <span class="text-xl font-bold">$${(item.price * item.quantity).toFixed(2)}</span>
+                        <button class="remove-btn text-red-600 hover:text-red-800 ml-4" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+
+            // Add event listeners to quantity buttons and remove buttons
+            document.querySelectorAll('.quantity-btn').forEach(btn => {
+                btn.addEventListener('click', updateQuantity);
+            });
+
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', removeItem);
+            });
+
+            // Calculate totals
+            calculateTotals();
+        }
+
+        // Update item quantity
+        function updateQuantity(e) {
+            const index = parseInt(e.target.getAttribute('data-index'));
+            const action = e.target.getAttribute('data-action');
+
+            if (action === 'increase') {
+                cart[index].quantity++;
+            } else if (action === 'decrease' && cart[index].quantity > 1) {
+                cart[index].quantity--;
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+
+        // Remove item from cart
+        function removeItem(e) {
+            const index = parseInt(e.target.getAttribute('data-index'));
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+
+        // Calculate cart totals
+        function calculateTotals() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.08; // 8% tax
+            const shipping = subtotal > 0 ? 50 : 0; // $50 shipping if items in cart
+            const total = subtotal + tax + shipping;
+
+            subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+            taxEl.textContent = `$${tax.toFixed(2)}`;
+            shippingEl.textContent = `$${shipping.toFixed(2)}`;
+            totalEl.textContent = `$${total.toFixed(2)}`;
+            document.getElementById('checkout-total').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Show checkout section
+        function showCheckout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            checkoutSection.classList.remove('hidden');
+            checkoutSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Process payment
+        function processPayment(e) {
+            e.preventDefault();
+
+            // Validate form
+            const billingForm = document.getElementById('billingForm');
+            if (!billingForm.checkValidity()) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Simulate payment processing
+            const cardNumber = document.getElementById('cardNumber').value;
+            if (cardNumber !== '4242 4242 4242 4242') {
+                alert('Invalid card number. Please use 4242 4242 4242 4242 for testing.');
+                return;
+            }
+
+            // Show loading state
+            payButton.disabled = true;
+            payButton.textContent = 'Processing...';
+
+            setTimeout(() => {
+                // Create order details
+                const orderDetails = document.getElementById('order-details');
+                orderDetails.innerHTML = '';
+
+                cart.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = `${item.name} x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`;
+                    orderDetails.appendChild(li);
+                });
+
+                // Show order modal
+                orderModal.classList.remove('hidden');
+
+                // Reset form
+                billingForm.reset();
+
+                // Clear cart
+                cart = [];
+                localStorage.removeItem('cart');
+                updateCartDisplay();
+
+                // Reset button
+                payButton.disabled = false;
+                payButton.textContent = `Pay $${totalEl.textContent}`;
+
+                // Hide checkout
+                checkoutSection.classList.add('hidden');
+            }, 2000);
+        }
+
+        // Show login modal
+        function showLogin() {
+            alert('Login functionality would open here. In a real application, this would connect to an authentication system.');
+        }
+
+        // Show registration modal
+        function showRegistration() {
+            registrationModal.classList.remove('hidden');
+        }
+
+        // Show notification
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            notification.textContent = message;
+
+            // Add to body
+            document.body.appendChild(notification);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Scroll to products section
+        function scrollToProducts() {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
+
